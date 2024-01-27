@@ -29,11 +29,9 @@ clientForm.addEventListener('submit', async event => {
         console.log("no data found");
         // turn on alert
         document.querySelector("#alertMessage").style.display = 'block';
-        document.querySelector("#tableCustomer").style.display = 'none';
     } else {
         // turn off alert
         document.querySelector("#alertMessage").style.display = 'none';
-        document.querySelector("#tableCustomer").style.display = 'none';
     }
 
     console.log(responseJSON);
