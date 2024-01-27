@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <form class="row g-3" id="TraversalForm">
+        <div class="col-md-1">
+            <input type="radio" class="btn-check" name="options-id" id="optionCnum" autocomplete="off" checked>
+            <label class="btn" for="optionCnum">CNUM</label>
+        </div>
+        <div class="col-md-1">
+            <input type="radio" class="btn-check" name="options-id" id="optionInn" autocomplete="off" disabled>
+            <label class="btn" for="optionInn">INN</label>
+        </div>
+
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="searchIDField" name="idField" placeholder="Введите идентификатор клиента" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Глубина поиска</label>
+            <select class="form-select" aria-label="bfsDepth" name="maxDepth">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Направление обхода</label>
+            <select class="form-select" aria-label="bfsDirection" name="bfsDirection">
+                <option value="any">any</option>
+                <option value="outbound">outbound</option>
+                <option value="inbound">inbound</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary inline-block">Построить граф</button>
+        </div>
+    </form>
+
+    <br>
+    <div class="alert alert-warning alert-dismissible" id="alertMessage" role="alert" style="display: none">
+        Не найден пользователь, проверьте ID
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 rounded border" style="height: 500px; padding: 0;" id='graph-container'></div>
+    </div>
+</div>
+{% endblock %}
