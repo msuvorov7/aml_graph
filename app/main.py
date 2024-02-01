@@ -54,13 +54,13 @@ async def get_graph(traversal: TraversalFormData):
     :param traversal: Параметры с формы
     :return:
     """
-    start_vertex = f'pi/{traversal.idField}'
+    start_vertex = f'nodes/{traversal.idField}'
     max_depth = traversal.maxDepth
     bfs_direction = traversal.bfsDirection
 
     # проверка на то, что пользователь существует в базе
     user_exists_query = """
-    RETURN LENGTH(FOR user IN pi FILTER user._id == @user_id LIMIT 1 RETURN true) > 0
+    RETURN LENGTH(FOR user IN nodes FILTER user._id == @user_id LIMIT 1 RETURN true) > 0
     """
     cursor = db.aql.execute(
         user_exists_query,
@@ -73,7 +73,7 @@ async def get_graph(traversal: TraversalFormData):
         return JSONResponse(dict())
 
     query = """
-            for u, e in 0..@max_depth {0} @start_vertex rci
+            for u, e in 0..@max_depth {0} @start_vertex edges
                 options {{
                     bfs: true,
                     uniqueEdges: 'path',
@@ -83,7 +83,7 @@ async def get_graph(traversal: TraversalFormData):
                 u,
                 from: e._from,
                 to: e._to,
-                amount: e.amount_lcy,
+                amount: e.amount,
                 dlk_cob_date: e.dlk_cob_date
             }}
     """.format(bfs_direction)
