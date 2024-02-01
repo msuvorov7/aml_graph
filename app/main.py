@@ -72,8 +72,6 @@ async def get_graph(traversal: TraversalFormData):
     if not list(cursor)[0]:
         return JSONResponse(dict())
 
-    # баг с аггрегацией суммы ребер
-
     query = """
             for u, e in 0..@max_depth {0} @start_vertex edges
                 options {{
@@ -84,6 +82,7 @@ async def get_graph(traversal: TraversalFormData):
                 limit 20000
             return distinct {{
                 u,
+                edge_id: e._id,
                 from: e._from,
                 to: e._to,
                 amount: e.amount,
@@ -106,8 +105,10 @@ async def get_graph(traversal: TraversalFormData):
     nodes = list({v['_id']: v for v in nodes}.values())
     nodes = [{'data': node} for node in nodes]
 
+    unique_edges = list({e['edge_id']: e for e in net}.values())
+
     edges = dict()
-    for edge in net[1:]:
+    for edge in unique_edges[1:]:
         path = edge['from'] + '->' + edge['to']
         if path in edges:
             edges[path]['amount'] += edge['amount']
