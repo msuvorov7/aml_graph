@@ -133,21 +133,25 @@ clientForm.addEventListener('submit', async event => {
             ],
     })
 
+    // draw only vertex neighbours on click
     cy.bind('dblclick', 'node', function(evt) {
         let sel = evt.target;
         cy.elements().difference(sel.neighborhood()).not(sel).hide();
     });
 
+    // draw all graph on lhs + rhs mouse buttons
     cy.bind('cxttap', function(evt) {
         cy.elements().show();
     });
 
+    // show vertex neighbours on vertex hover
     cy.on('mouseover', 'node', function(e) {
         let sel = e.target;
         cy.elements().difference(sel.neighborhood()).not(sel).addClass('semitransp');
         sel.addClass('highlight').neighborhood().addClass('highlight');
     });
 
+    // rollback vertex hover
     cy.on('mouseout', 'node', function(e) {
         let sel = e.target;
         cy.elements().removeClass('semitransp');
