@@ -72,14 +72,17 @@ async def get_graph(traversal: TraversalFormData):
     if not list(cursor)[0]:
         return JSONResponse(dict())
 
+    # баг с аггрегацией суммы ребер
+
     query = """
             for u, e in 0..@max_depth {0} @start_vertex edges
                 options {{
                     bfs: true,
+                    uniqueVertices: 'path',
                     uniqueEdges: 'path',
                 }}
                 limit 20000
-            return {{
+            return distinct {{
                 u,
                 from: e._from,
                 to: e._to,
